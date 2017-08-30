@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <toolbar></toolbar>
-    <compose v-if="seen"></compose>
     <messages></messages>
+    <br>
+    <Compose v-show="toggleCompose"></Compose>
   </div>
 </template>
 
@@ -11,6 +12,7 @@ import Toolbar from './components/Toolbar'
 import Compose from './components/Compose'
 import Message from './components/Message'
 import Messages from './components/Messages'
+import Badge from './components/Badge'
 
 export default {
   name: 'app',
@@ -18,7 +20,13 @@ export default {
     Toolbar,
     Compose,
     Message,
-    Messages
+    Messages,
+    Badge
+  },
+  data() {
+    return {
+      toggleCompose: false
+    }
   }
 }
 </script>
@@ -28,9 +36,27 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  margin-left: 5em;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.pull-right {
+  display: inline-block;
+  margin-left: 10%;
+}
+
+.messagebox {
+  margin-left: 2em;
+}
+
+.checkbox {
+  margin-left: 1.5em;
+  margin-right: 2em;
+}
+
+.star {
+  margin-right: 2em;
 }
 
 .message {
@@ -39,6 +65,10 @@ export default {
   padding-bottom: 8px;
   cursor: pointer;
   border-bottom: 1px solid #efefef;
+}
+
+.row {
+    margin-right: -15px;
 }
 
 .message a {
@@ -79,6 +109,7 @@ export default {
 }
 
 .toolbar {
+  margin-left: 1em;
   margin-top: 1em;
   margin-bottom: 1em;
 }
@@ -106,5 +137,9 @@ footer.spacer {
 
 .fa-close {
   cursor: pointer;
+}
+
+.form-horizontal {
+  margin-left: 1em;
 }
 </style>
