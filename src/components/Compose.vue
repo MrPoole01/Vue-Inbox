@@ -1,5 +1,5 @@
 <template>
-  <b-form class="form-horizontal well">
+  <b-form class="form-horizontal well" v-show="form">
   <div class="form-group">
     <div class="col-sm-8 col-sm-offset-2">
       <h4>Compose Message</h4>
@@ -20,6 +20,7 @@
   <div class="form-group">
     <div class="col-sm-8 col-sm-offset-2">
       <b-button type="submit" variant="primary">Send</b-button>
+      <b-button @click="exitForm" type="submit" variant="primary">Cancel</b-button>
     </div>
   </div>
 </b-form>
@@ -27,9 +28,11 @@
 
 <script>
 export default {
-
+  name: 'form-horizontal',
+  props: [
+    'form',
+    'inputForm',
+    'exitForm'
+  ]
 }
 </script>
-
-<style lang="css">
-</style>

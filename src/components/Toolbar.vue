@@ -1,73 +1,114 @@
+
 <template>
   <div class="row toolbar">
     <div class="col-md-12">
 
-      <b-button class="btn btn-danger">
+      <b-button @click="inputForm" class="btn btn-danger">
         <icon name="plus"></icon>
       </b-button>
 
-      <b-button class="btn btn-default">
-        <icon name="minus-square-o"></icon>
+      <b-button class="btn btn-default" @click="bulkSelect">
+        <icon v-if="halfCheckbox"  name="minus-square-o"></icon>
+        <icon v-if="bulkCheckbox"  name="check-square-o"></icon>
+        <icon v-if="emptyCheckbox" name="square-o"></icon>
       </b-button>
 
-      <b-button class="btn btn-default">Mark As Read</b-button>
+      <b-button @click="markRead" class="btn btn-default" :disabled="emptyCheckbox">Mark As Read</b-button>
 
-      <b-button class="btn btn-default">Mark As Unread</b-button>
+      <b-button @click="markUnread"class="btn btn-default" :disabled="emptyCheckbox">Mark As Unread</b-button>
 
-      <b-form-select v-model="selected" :options="options" class="form-control label-select">
+      <b-form-select
+        v-model="selected"
+        :options="options"
+        :disabled="emptyCheckbox"
+        class="form-control label-select">
         <div>Selected: <strong>{{ selected }}</strong></div>
       </b-form-select>
 
-      <b-form-select v-model="unselected" :options="unoption" class="form-control label-select">
+      <b-form-select
+        v-model="unselected"
+        :options="unoption"
+        :disabled="emptyCheckbox"
+        class="form-control label-select">
         <div>Selected2: <strong>{{ unselected }}</strong></div>
       </b-form-select>
 
-      <b-button class="btn btn-default">
+      <b-button @click="form" class="btn btn-default" :disabled="emptyCheckbox">
         <icon name="trash-o"></icon>
       </b-button>
 
-      <Badge></Badge>
+      <p class="pull-right">
+        <b-badge class="badge" pill variant=""  name="badge">{{ unreadCount }}</b-badge>
+        unread messages
+      </p>
+
     </div>
   </div>
 </template>
 
+
 <script>
-import Badge from './Badge'
 
 export default {
   name: 'toolbar',
-
-  components: {
-    Badge
-  },
+  props: [
+    'emails',
+    'unreadCount',
+    'markRead',
+    'markUnread',
+    'bulkCheckbox',
+    'halfCheckbox',
+    'emptyCheckbox',
+    'starMessage',
+    'bulkSelect',
+    'inputForm',
+    'form'
+],
   data() {
-    return {
-      selected: null,
-      options: [
-       { value: null, text: 'Apply label' },
-       { value: 'dev', text: 'dev' },
-       { value: 'personal', text: 'personal' },
-       { value: 'gschool', text: 'gschool', disabled: true }
-     ],
-      unselected: null,
-      unoption: [
-       { value: null, text: 'Remove label' },
-       { value: 'dev', text: 'dev' },
-       { value: 'personal', text: 'personal' },
-       { value: 'gschool', text: 'gschool', disabled: true }
-     ],
-    }
-  },
-  methods: {
-
+      return {
+        selected: null,
+        options: [
+         { value: null, text: 'Apply label' },
+         { value: 'dev', text: 'dev' },
+         { value: 'personal', text: 'personal' },
+         { value: 'gschool', text: 'gschool'}
+       ],
+        unselected: null,
+        unoption: [
+         { value: null, text: 'Remove label' },
+         { value: 'dev', text: 'dev' },
+         { value: 'personal', text: 'personal' },
+         { value: 'gschool', text: 'gschool'}
+       ]
+     }
+   },
+   watch: {
+     selected(label) {
+       if (label != null) {
+         for (let i = 0; i < this.emails.length; i++) {
+           let hasLabel = this.emails[i].labels.some(el => el == label)
+           if (this.emails[i].selected && !hasLabel) {
+             this.emails[i].labels.push(label)
+           }
+         }
+       }
+     },
+     unselected(label) {
+       if (label != null) {
+         for (let i = 0; i < this.emails.length; i++) {
+           let hasLabel = this.emails[i].labels.some(el => el == label)
+           if (hasLabel && this.emails[i].selected) {
+             let index = this.emails[i].labels.indexOf(label)
+             this.emails[i].labels.splice(index, 1)
+           }
+         }
+       }
+     }
+   }
   }
-}
-
-
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >
-
 </style>

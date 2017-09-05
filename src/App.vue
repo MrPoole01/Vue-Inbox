@@ -1,31 +1,112 @@
 <template>
-  <div id="app">
-    <toolbar></toolbar>
-    <messages></messages>
-    <br>
-    <Compose v-show="toggleCompose"></Compose>
-  </div>
+<div id="app">
+
+  <Toolbar
+    :emails="emails"
+    :bulkCheckbox="bulkCheckbox"
+    :halfCheckbox="halfCheckbox"
+    :emptyCheckbox="emptyCheckbox"
+    :inputForm="inputForm"
+    :markRead="markRead"
+    :markUnread="markUnread"
+    :bulkSelect="bulkSelect"
+    :unreadCount="unreadCount"
+    :starMessage="starMessage">
+  </Toolbar>
+
+  <Compose
+    :inputForm="inputForm"
+    :exitForm="exitForm"
+    :form="form">
+  </Compose>
+
+  <Messages
+    :emails="emails"
+    :starMessage="starMessage">
+  </Messages>
+
+
+</div>
 </template>
 
 <script>
 import Toolbar from './components/Toolbar'
 import Compose from './components/Compose'
-import Message from './components/Message'
 import Messages from './components/Messages'
-import Badge from './components/Badge'
+const baseURL = 'http://localhost:8082/api'
+
+
 
 export default {
   name: 'app',
   components: {
     Toolbar,
     Compose,
-    Message,
-    Messages,
-    Badge
+    Messages
   },
   data() {
     return {
-      toggleCompose: false
+      emails: [],
+      form: false
+    }
+  },
+  async mounted() {
+    const data = await fetch(`${baseURL}/messages`)
+    const response = await data.json()
+    this.emails = response._embedded.messages.map(message => {
+      message.selected = false
+      return message
+    })
+  },
+  computed: {
+    unreadCount() {
+      return this.emails.reduce((acc, email) => {
+        if (email.read == false) {
+          acc++
+        }
+        return acc
+      }, 0)
+    },
+    bulkCheckbox() {
+      return this.emails.every(email => email.selected)
+    },
+    halfCheckbox() {
+      return this.emails.some(email => email.selected) && !this.bulkCheckbox
+    },
+    emptyCheckbox() {
+      return this.emails.every(email => !email.selected)
+    }
+  },
+  methods: {
+    starMessage(message) {
+      message.starred = !message.starred
+    },
+    bulkSelect() {
+      if (this.bulkCheckbox) {
+        this.emails.forEach(email => this.$set(email, 'selected', false))
+      } else {
+        this.emails.forEach(email => this.$set(email, 'selected', true))
+      }
+    },
+    inputForm() {
+      this.form = true
+    },
+    exitForm() {
+      this.form = false
+    },
+    markRead() {
+      for (let i = 0; i < this.emails.length; i++) {
+        if (this.emails[i].selected) {
+          this.emails[i].read = true
+        }
+      }
+    },
+    markUnread() {
+      for (let i = 0; i < this.emails.length; i++) {
+        if (this.emails[i].selected) {
+          this.emails[i].read = false
+        }
+      }
     }
   }
 }
@@ -68,18 +149,20 @@ export default {
 }
 
 .row {
-    margin-right: -15px;
+  margin-right: -15px;
 }
 
 .message a {
   color: black;
 }
 
-.message a:hover, .message a:active, .message a:focus {
+.message a:hover,
+.message a:active,
+.message a:focus {
   text-decoration: none;
 }
 
-.message + .message {
+.message+.message {
   border-top: 1px solid #efefef;
 }
 

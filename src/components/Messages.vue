@@ -1,23 +1,25 @@
 <template>
   <div class="messages">
-    <Message v-for="email in emailList" :email="email" key=""></Message>
+    <Message
+      v-for="email in emails"
+      :email="email"
+      :starMessage="starMessage"
+      key="">
+    </Message>
   </div>
 </template>
 
 <script>
 import Message from "./Message"
-import Data from "../Data/seeds"
-
 
 export default {
   name: 'messages',
+  props: [
+    'emails',
+    'starMessage'
+  ],
   components: {
     Message
-  },
-  data() {
-    return {
-      emailList: Data
-    }
   }
 }
 </script>
