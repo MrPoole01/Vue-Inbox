@@ -11,18 +11,14 @@
     :markUnread="markUnread"
     :bulkSelect="bulkSelect"
     :unreadCount="unreadCount"
-    :starMessage="starMessage">
+    :starMessage="starMessage"
+    :deleteEmail="deleteEmail">
   </Toolbar>
 
-  <Compose
-    :inputForm="inputForm"
-    :exitForm="exitForm"
-    :form="form">
+  <Compose :inputForm="inputForm" :exitForm="exitForm" :form="form">
   </Compose>
 
-  <Messages
-    :emails="emails"
-    :starMessage="starMessage">
+  <Messages :emails="emails" :starMessage="starMessage">
   </Messages>
 
 
@@ -80,6 +76,24 @@ export default {
   methods: {
     starMessage(message) {
       message.starred = !message.starred
+      const data = {
+        "messageIds": [message.id],
+        "command": "star",
+        "star" : message.starred
+      }
+      const settings = {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      fetch(`${baseURL}/messages`, settings)
+      .then(response => {
+        if (response.ok) {
+          console.log(response);
+        }
+      })
     },
     bulkSelect() {
       if (this.bulkCheckbox) {
@@ -95,18 +109,84 @@ export default {
       this.form = false
     },
     markRead() {
+      const id = []
       for (let i = 0; i < this.emails.length; i++) {
         if (this.emails[i].selected) {
           this.emails[i].read = true
+          id.push(this.emails[i].id)
         }
       }
+      const data = {
+        "messageIds": id,
+        "command": "read",
+        "read" : true
+      }
+      const settings = {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      fetch(`${baseURL}/messages`, settings)
+      .then(response => {
+        if (response.ok) {
+          console.log(response);
+        }
+      })
     },
     markUnread() {
+      const id = []
       for (let i = 0; i < this.emails.length; i++) {
         if (this.emails[i].selected) {
           this.emails[i].read = false
+          id.push(this.emails[i].id)
         }
       }
+      const data = {
+        "messageIds": id,
+        "command": "read",
+        "read" : false
+      }
+      const settings = {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      fetch(`${baseURL}/messages`, settings)
+      .then(response => {
+        if (response.ok) {
+          console.log(response);
+        }
+      })
+    },
+    deleteEmail() {
+      const id = []
+      this.emails = this.emails.filter(email => {
+      if (email.selected) {
+        id.push(email.id)
+      }
+      return !email.selected
+      })
+      const data = {
+        "messageIds": id,
+        "command": "delete"
+      }
+      const settings = {
+        method: 'PATCH',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      fetch(`${baseURL}/messages`, settings)
+      .then(response => {
+        if (response.ok) {
+          console.log(response);
+        }
+      })
     }
   }
 }
