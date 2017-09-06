@@ -29,7 +29,7 @@
 import Toolbar from './components/Toolbar'
 import Compose from './components/Compose'
 import Messages from './components/Messages'
-const baseURL = 'http://localhost:8082/api'
+const baseURL = 'https://inbox-ui.herokuapp.com/api'
 
 
 
