@@ -63,6 +63,7 @@ export default {
     'bulkSelect',
     'inputForm',
     'deleteEmail',
+    'baseURL',
     'form'
 ],
   data() {

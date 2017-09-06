@@ -12,7 +12,8 @@
     :bulkSelect="bulkSelect"
     :unreadCount="unreadCount"
     :starMessage="starMessage"
-    :deleteEmail="deleteEmail">
+    :deleteEmail="deleteEmail"
+    :baseURL="baseURL">
   </Toolbar>
 
   <Compose :inputForm="inputForm" :exitForm="exitForm" :form="form">
