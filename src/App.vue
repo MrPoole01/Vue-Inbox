@@ -198,9 +198,24 @@ export default {
         }
       })
     },
-    compose(event) {
-      event.preventDefault()
-      console.log(this.composeEmail);
+    compose() {
+      const data = {
+        "subject": this.composeEmail.subject,
+        "body": this.composeEmail.message
+      }
+      const settings = {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      fetch(`${baseURL}/messages`, settings)
+      .then(response => {
+        if (response.ok) {
+          console.log(response);
+        }
+      })
     }
   }
 }
