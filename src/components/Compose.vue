@@ -19,7 +19,7 @@
   </div>
   <div class="form-group">
     <div class="col-sm-8 col-sm-offset-2">
-      <b-button type="submit" variant="primary">Send</b-button>
+      <b-button @click="compose" type="submit" variant="primary">Send</b-button>
       <b-button @click="exitForm" type="submit" variant="primary">Cancel</b-button>
     </div>
   </div>
