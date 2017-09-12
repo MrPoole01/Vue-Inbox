@@ -13,7 +13,8 @@
     :unreadCount="unreadCount"
     :starMessage="starMessage"
     :deleteEmail="deleteEmail"
-    :baseURL="baseURL">
+    :baseURL="baseURL"
+    :composeEmail="composeEmail">
   </Toolbar>
 
   <Compose :inputForm="inputForm" :exitForm="exitForm" :form="form">
@@ -44,7 +45,11 @@ export default {
   data() {
     return {
       emails: [],
-      form: false
+      form: false,
+      composeEmail: {
+        subject: '',
+        message: ''
+      }
     }
   },
   async mounted() {
@@ -188,6 +193,10 @@ export default {
           console.log(response);
         }
       })
+    },
+    compose(event) {
+      event.preventDefault()
+      console.log(this.composeEmail);
     }
   }
 }

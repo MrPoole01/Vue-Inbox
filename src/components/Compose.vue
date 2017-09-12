@@ -8,13 +8,13 @@
   <div class="form-group">
     <label for="subject" class="col-sm-2 control-label">Subject</label>
     <div class="col-sm-8">
-      <b-form-input type="text" class="form-control" id="subject" placeholder="Enter a subject" name="subject"></b-form-input>
+      <b-form-input type="text" class="form-control" id="subject" v-model="composeEmail.subject" placeholder="Enter a subject" name="subject"></b-form-input>
     </div>
   </div>
   <div class="form-group">
     <label for="body" class="col-sm-2 control-label">Body</label>
     <div class="col-sm-8">
-      <textarea name="body" id="body" class="form-control"></textarea>
+      <textarea name="body" id="body" v-model="composeEmail.message" class="form-control"></textarea>
     </div>
   </div>
   <div class="form-group">
@@ -32,7 +32,8 @@ export default {
   props: [
     'form',
     'inputForm',
-    'exitForm'
+    'exitForm',
+    'composeEmail'
   ]
 }
 </script>
