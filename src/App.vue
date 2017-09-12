@@ -13,11 +13,15 @@
     :unreadCount="unreadCount"
     :starMessage="starMessage"
     :deleteEmail="deleteEmail"
-    :baseURL="baseURL"
-    :composeEmail="composeEmail">
+    :baseURL="baseURL">
   </Toolbar>
 
-  <Compose :inputForm="inputForm" :exitForm="exitForm" :form="form">
+  <Compose
+    :inputForm="inputForm"
+    :exitForm="exitForm"
+    :form="form"
+    :composeEmail="composeEmail"
+    :compose="compose">
   </Compose>
 
   <Messages :emails="emails" :starMessage="starMessage">

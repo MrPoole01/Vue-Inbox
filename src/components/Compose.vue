@@ -33,7 +33,8 @@ export default {
     'form',
     'inputForm',
     'exitForm',
-    'composeEmail'
+    'composeEmail',
+    'compose'
   ]
 }
 </script>
