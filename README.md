@@ -1,6 +1,8 @@
 ![Vue-Inbox](src/assets/logo.png)
 # Vue-inbox
-I created a dynamic email inbox using the fairly new and popular framework VueJS. This web applic;:ition is built with the latest technologies along with being fully CRUD.
+I created a dynamic email inbox using the fairly new and popular framework VueJS. This web application is built with the latest technologies along with being fully CRUD.
+
+Link to live site => https://inboxui-22ff9.firebaseapp.com/
 
 ## Technology Used:
 - VueJS
